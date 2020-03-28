@@ -5,7 +5,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 
 public class FieldButton extends Button {
-    private static int x;
+    private int x;
     private int y;
 
     FieldButton(int x, int y, int beginX, int beginY) {
@@ -25,8 +25,8 @@ public class FieldButton extends Button {
         });
     }
 
-    public static int getxx() {
-        return x;
-    }
+//    public static int getxx() {
+//        return x;
+//    }
 
 }
