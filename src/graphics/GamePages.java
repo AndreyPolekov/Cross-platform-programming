@@ -7,8 +7,13 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 
 import static java.lang.Thread.sleep;
 
@@ -35,10 +40,35 @@ public class GamePages extends Application {
         mainPage();
     }
 
-    private void mainPage() {
+    private void mainPage() throws FileNotFoundException {
+        //FileInputStream inputstream = new FileInputStream("C:\\Program Files\\IntelliJ IDEA\\Projects\\Game Sea Battle\\src\\resourcess\\Ship.jpg");
+        //clazz.getResourceAsStream("C:/Program Files/IntelliJ IDEA/Projects/Game Sea Battle/src/resources/Ship.png");
+        //Image image = new Image(new FileInputStream("C:\\Program Files\\IntelliJ IDEA\\Projects\\Game Sea Battle\\src\\resourcess\\Ship.jpg"));
+        //Image image = new Image(new FileInputStream("C:\Program Files\IntelliJ IDEA\Projects\Game Sea Battle\src\resourcess\Ship.jpg"));
+        //Image image = new Image(input);        //ImageView imageView = new ImageView(new Image("resourcess\\Ship.jpg"));
+//        Class<?> clazz = this.getClass();
+//        InputStream input = clazz.getResourceAsStream("C:/Program Files/IntelliJ IDEA/Projects/Game Sea Battle/src/resources/Ship.png");
+//
+//        Image image = new Image(input);
+//
+//        ImageView imageView = new ImageView(image);
+//C:/Program Files/IntelliJ IDEA/Projects/Game Sea Battle/
+//        Image image = new Image("src/resources/Ship.png");
+//        ImageView imageView = new ImageView(image);
+//
+        //stackPane.getChildren().add(imageView);
+
+
         Button startGameButton = new Button("Играть");
+
+
+
         StackPane stackPane = new StackPane();
+
         stackPane.getChildren().add(startGameButton);
+
+
+
         Scene scene = new Scene(stackPane, SCENE_SIZE_X, SCENE_SIZE_Y);
         stage.setScene(scene);
         stage.show();
