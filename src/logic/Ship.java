@@ -6,11 +6,7 @@ public class Ship {
     private int size,
                 baseX,
                 baseY;
-
-
-
-
-    private enum State {
+    enum State {
         DAMAGET, WORKING
     }
     private Vector<State> partStates = new Vector<State>();
@@ -41,21 +37,13 @@ public class Ship {
         return orientation;
     }
     public void damage(int x, int y) {
-        //System.out.println("проверка повреждения");///////////////////////////////////////
         int i;
         if (orientation == Orientation.HORIZONTAL) {
             for (i = 0; x != baseX; i++, x--);
         } else {
             for (i = 0; y != baseY; i++, y--);
         }
-        //System.out.println("повреждён на " + i);///////////////////////////////////////
         partStates.set(i, State.DAMAGET);
-
-//        System.out.println("проверка повреждения");///////////////////////////////////////
-//        int i;
-//        for (i = 0; x != baseX || y != baseY; i++, x--, y--);
-//        System.out.println("повреждён на " + i);///////////////////////////////////////
-//        partStates.set(i, State.DAMAGET);
     }
     public boolean isDestroyed() {
         for (State state :partStates) {
@@ -64,6 +52,15 @@ public class Ship {
             }
         }
         return true;
+    }
+    public State getState(int x, int y) {
+        int i;
+        if (orientation == Orientation.HORIZONTAL) {
+            for (i = 0; x != baseX; i++, x--);
+        } else {
+            for (i = 0; y != baseY; i++, y--);
+        }
+        return partStates.get(i);
     }
     public boolean contain(int x, int y) {
         if (orientation == Orientation.HORIZONTAL) {
@@ -81,7 +78,4 @@ public class Ship {
         }
         return false;
     }
-    //public void setState(State state) {
-//        this.state = state;
-//    }
 }

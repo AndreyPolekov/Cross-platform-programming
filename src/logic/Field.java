@@ -20,6 +20,11 @@ public class Field {
         QUADRUPLE_SHIP_COUNT;
 
 
+
+    public enum Commander {
+        PLAYER, COMPUTER
+    }
+    private Commander commander;
     private Cell[][] cells = new Cell[CELL_COUNT_Y][CELL_COUNT_X];
     private Vector<Ship> ships = new Vector<Ship>();
     private int destroyedShipsCount = 0;
@@ -122,9 +127,9 @@ public class Field {
     }
     public void setRandomShips() {
         while (true) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ex) {}
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException ex) {}
             //System.out.print("+");//////////////////////////////////////////////
             //print();/////
             for (int y = 0; y < CELL_COUNT_Y; y++) {
@@ -195,7 +200,6 @@ public class Field {
     public Cell getCell(int x, int y) {
         return cells[y][x];
     }
-
     public Ship getShip(int x, int y) {
         for (Ship ship :ships) {
             if (ship.contain(x, y)) {
@@ -204,13 +208,13 @@ public class Field {
         }
         return null;
     }
-    public void openFireOnCell(int x, int y) {
+    public boolean openFireOnCell(int x, int y) {
         if (cells[y][x].getState() == Cell.State.EMPTY) {
             cells[y][x].setState(Cell.State.STRAFED);
+            return false;
         } else if (cells[y][x].getState() == Cell.State.SHIP) {
             Ship ship = getShip(x, y);
             ship.damage(x, y);
-            //System.out.println("было повреждение, проверка уничтожения");///////////////////////////////////////
             if (ship.isDestroyed()) {
                 for (Cell cell :getShipEnvirons(ship)) {
                     if (!ship.contain(cell.getX(), cell.getY())) {
@@ -219,12 +223,19 @@ public class Field {
                 }
                 destroyedShipsCount++;
             }
+            return true;
         }
+        return false;
     }
     public boolean isAllShipsDestriyed() {
         return destroyedShipsCount == SHIP_COUNT;
     }
-
+    public Commander getCommander() {
+        return commander;
+    }
+    public void setCommander(Commander commander) {
+        this.commander = commander;
+    }
     ////
     public void print() {
         for (int y = 0; y < CELL_COUNT_Y; y++) {

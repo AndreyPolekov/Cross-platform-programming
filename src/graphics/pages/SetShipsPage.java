@@ -21,7 +21,7 @@ import static logic.Ship.Orientation.HORIZONTAL;
 import static logic.Ship.Orientation.VERTICAL;
 
 public class SetShipsPage extends Page {
-    private static int playerIndex;
+    private static int commanderIndex;
 
     static class SetShipsField {
         private static SetShipsField setShipsField;
@@ -117,7 +117,7 @@ public class SetShipsPage extends Page {
                             selectedShipBeginY = (int) getTranslateY();
                             selectedShipBeginOrientation = orientation;
                             if (isSetted == true) {
-                                Battle.get().getField(playerIndex).deleteShip(
+                                Battle.get().getField(commanderIndex).deleteShip(
                                         SetShipsField.get().getCellIndexX(selectedShipBeginX + 1),
                                         SetShipsField.get().getCellIndexY(selectedShipBeginY + 1),
                                         size,
@@ -141,13 +141,13 @@ public class SetShipsPage extends Page {
                         if (event.getButton() == MouseButton.PRIMARY) {
                             isLeftButtonDown = false;
                             if (SetShipsField.get().isTarget((int)event.getSceneX(), (int)event.getSceneY())) {
-                                if (Battle.get().getField(playerIndex).isRightShipSetting(
+                                if (Battle.get().getField(commanderIndex).isRightShipSetting(
                                         SetShipsField.get().getCellIndexX((int)event.getSceneX()),
                                         SetShipsField.get().getCellIndexY((int)event.getSceneY()),
                                         size,
                                         orientation)) {
 
-                                    Battle.get().getField(playerIndex).setShip(
+                                    Battle.get().getField(commanderIndex).setShip(
                                             SetShipsField.get().getCellIndexX((int)event.getSceneX()),
                                             SetShipsField.get().getCellIndexY((int)event.getSceneY()),
                                             size,
@@ -159,7 +159,7 @@ public class SetShipsPage extends Page {
                                 }
                             }
                             if (isSetted == true) {
-                                Battle.get().getField(playerIndex).setShip(
+                                Battle.get().getField(commanderIndex).setShip(
                                         SetShipsField.get().getCellIndexX(selectedShipBeginX + 1),
                                         SetShipsField.get().getCellIndexY(selectedShipBeginY + 1),
                                         size,
@@ -223,7 +223,7 @@ public class SetShipsPage extends Page {
 
             shipIndex = 0;
             for (int i = 4; i >= 1; i--) {
-                for (int j = 0; j < Battle.get().getField(playerIndex).getShipCountWithSize(i); j++, shipIndex++) {
+                for (int j = 0; j < Battle.get().getField(commanderIndex).getShipCountWithSize(i); j++, shipIndex++) {
                     shipsImages[shipIndex] = new DraggableShip(i);
                     shipsImages[shipIndex].setTranslateX(shipsPaneBeginX + j * (CELL_SIZE * shipsImages[shipIndex].getSize() + shipsInterval));
                     shipsImages[shipIndex].setTranslateY(shipsPaneBeginY + (4 - i) * shipsDistance);
@@ -234,11 +234,11 @@ public class SetShipsPage extends Page {
         public void showDraggableShips() {
             shipIndex = 0;
             for (int i = 4; i >= 1; i--) {
-                for (int j = 0; j < Battle.get().getField(playerIndex).getShipCountWithSize(i); j++, shipIndex++) {
-                    shipsImages[shipIndex].setTranslateX(SetShipsField.get().getCellXByIndex(Battle.get().getField(playerIndex).getShip(shipIndex).getBaseX()));
-                    shipsImages[shipIndex].setTranslateY(SetShipsField.get().getCellYByIndex(Battle.get().getField(playerIndex).getShip(shipIndex).getBaseY()));
+                for (int j = 0; j < Battle.get().getField(commanderIndex).getShipCountWithSize(i); j++, shipIndex++) {
+                    shipsImages[shipIndex].setTranslateX(SetShipsField.get().getCellXByIndex(Battle.get().getField(commanderIndex).getShip(shipIndex).getBaseX()));
+                    shipsImages[shipIndex].setTranslateY(SetShipsField.get().getCellYByIndex(Battle.get().getField(commanderIndex).getShip(shipIndex).getBaseY()));
                     shipsImages[shipIndex].setOnField();
-                    shipsImages[shipIndex].changeOrientation(Battle.get().getField(playerIndex).getShip(shipIndex).getOrientation());
+                    shipsImages[shipIndex].changeOrientation(Battle.get().getField(commanderIndex).getShip(shipIndex).getOrientation());
                 }
             }
         }
@@ -264,61 +264,38 @@ public class SetShipsPage extends Page {
         }
     }
 
-    SetShipsPage(int newPlayerIndex) {
-        this.playerIndex = newPlayerIndex;
+    SetShipsPage(int newCommanderIndex) {
+        ImageView backgroundImage = new ImageView(new Image("resources/WaterBackground.jpg"));
+        mainPane.getChildren().add(backgroundImage);
+
+        this.commanderIndex = newCommanderIndex;
         mainPane.getChildren().add(SetShipsField.get().getPane());
         mainPane.getChildren().add(DraggableShips.get().getPane());
 
         Button nextButton = new Button("Далее");
         nextButton.setTranslateX(WINDOW_SIZE_X - 70);
         nextButton.setTranslateY(WINDOW_SIZE_Y - 50);
-        if (Battle.get().getMode() == Battle.GameMoge.PvE) {
-            nextButton.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    if (!DraggableShips.get().isAllShipsSetted()) {
-                        System.out.println("Not all ships is setted");
-                        return;
-                    }
-                    Battle.get().getField(++playerIndex).setRandomShips();
-                    SetShipsField.clear();
-                    DraggableShips.clear();
-                    Window.setScene((new BattlePage()).getScene());
+        nextButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (!DraggableShips.get().isAllShipsSetted()) {
+                    System.out.println("Not all ships is setted");
+                    return;
                 }
-            });
-        } else {
-            if (this.playerIndex == 0) {
-                nextButton.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        System.out.println("player");////
-                        Battle.get().getField(0).print();///////////////////////////////////////////
-                        if (!DraggableShips.get().isAllShipsSetted()) {
-                            System.out.println("Not all ships is setted");
-                            return;
-                        }
-                        SetShipsField.clear();
-                        DraggableShips.clear();
-                        Window.setScene((new SetShipsPage(++playerIndex)).getScene());
-                    }
-                });
-            } else {
-                nextButton.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        if (!DraggableShips.get().isAllShipsSetted()) {
-                            System.out.println("Not all ships is setted");
-                            return;
-                        }
-                        SetShipsField.clear();
-                        DraggableShips.clear();
-                        System.out.println("player");////
-                        Battle.get().getField(1).print();///////////////////////////////////////////
+                SetShipsField.clear();
+                DraggableShips.clear();
+                if (Battle.get().getMode() == Battle.GameMoge.PvC) {
+                    Battle.get().getField(++commanderIndex).setRandomShips();
+                    Window.setScene((new BattlePage()).getScene());
+                } else {
+                    if (commanderIndex == 0) {
+                        Window.setScene((new SetShipsPage(++commanderIndex)).getScene());
+                    } else {
                         Window.setScene((new BattlePage()).getScene());
                     }
-                });
+                }
             }
-        }
+        });
         mainPane.getChildren().add(nextButton);
 
         Button randomSetShipsButton = new Button("Random");
@@ -327,7 +304,7 @@ public class SetShipsPage extends Page {
         randomSetShipsButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Battle.get().getField(playerIndex).setRandomShips();
+                Battle.get().getField(commanderIndex).setRandomShips();
                 DraggableShips.get().showDraggableShips();
             }
         });

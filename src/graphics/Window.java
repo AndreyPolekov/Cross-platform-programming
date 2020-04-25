@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import logic.Battle;
 
+import java.util.Vector;
+
 
 public class Window extends Application {
     public static final int WINDOW_SIZE_X = 1200;
@@ -19,31 +21,31 @@ public class Window extends Application {
     }
 
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        this.stage = stage;
-        this.stage.setWidth((double) WINDOW_SIZE_X);
-        this.stage.setHeight((double) WINDOW_SIZE_Y);
-        this.stage.setTitle("Game Sea Battle");
-        this.stage.setResizable(false);
-
-        Battle.get().getField(0).setRandomShips();
-        Battle.get().getField(1).setRandomShips();
-        Window.setScene((new BattlePage()).getScene());
-
-        this.stage.show();
-    }
-
-    //    @Override
+//    @Override
 //    public void start(Stage stage) throws Exception {
 //        this.stage = stage;
 //        this.stage.setWidth((double) WINDOW_SIZE_X);
 //        this.stage.setHeight((double) WINDOW_SIZE_Y);
 //        this.stage.setTitle("Game Sea Battle");
 //        this.stage.setResizable(false);
-//        this.stage.setScene((new MainPage()).getScene());
+//
+//        Battle.get().getField(0).setRandomShips();
+//        Battle.get().getField(1).setRandomShips();
+//        Window.setScene((new BattlePage()).getScene());
+//
 //        this.stage.show();
 //    }
+
+        @Override
+    public void start(Stage stage) throws Exception {
+        this.stage = stage;
+        this.stage.setWidth((double) WINDOW_SIZE_X);
+        this.stage.setHeight((double) WINDOW_SIZE_Y);
+        this.stage.setTitle("Game Sea Battle");
+        this.stage.setResizable(false);
+        this.stage.setScene((new MainPage()).getScene());
+        this.stage.show();
+    }
 
     public static void setScene(Scene scene) {
         stage.setScene(scene);
