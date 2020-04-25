@@ -86,7 +86,9 @@ public class BattlePage extends Page {
 
             //анализ изменений
             if (Battle.get().getField(beginningActiveFieldIndex).getCell(x, y).getState() == Cell.State.STRAFED) {
-                {battleFields[beginningActiveFieldIndex].buttons[y][x].setImage(new Image("resources/Cells/StrafedCell.png"));}
+                battleFields[beginningActiveFieldIndex].buttons[y][x].setImage(new Image("resources/Cells/StrafedCell.png"));
+
+
                 if (Battle.get().getMode() == Battle.GameMoge.PvP) {
                     setActiveField();
                 } else {
@@ -142,9 +144,9 @@ public class BattlePage extends Page {
             }
         }
         public void openFireAndAnalyzeByComputer() {
-            //System.out.print("b   ");/////////////
-            //try { Thread.sleep(3000); } catch (InterruptedException ex) {System.out.print("!!!!!!!!!!!!!");}
-            //System.out.println("e");///////////////
+//            System.out.print("b   ");/////////////
+//            try { Thread.sleep(3000); } catch (InterruptedException ex) {System.out.print("!!!!!!!!!!!!!");}
+//            System.out.println("e");///////////////
             Cell selectedCell = Battle.get().getComputerLogic().selectCell();
             System.out.println("x="+selectedCell.getX() +"   y="+ selectedCell.getY());/////////////////////////////////////////
             openFireAndAnalyze(selectedCell.getX(), selectedCell.getY());
@@ -173,7 +175,7 @@ public class BattlePage extends Page {
         ImageView backgroundImage = new ImageView(new Image("resources/WaterBackground.jpg"));
         mainPane.getChildren().add(backgroundImage);
 
-//        Label label = new Label();
+        Label label = new Label();
 //        battleResultMessage.setText("1");
 //        battleResultMessage.setFont(Font.font("Cambria", 32));
 //        battleResultMessage.setTextFill(Color.WHITE);
